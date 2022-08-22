@@ -13,6 +13,7 @@ BUILD := docker buildx build
 PLATFORM ?= linux/amd64,linux/arm64
 PROGRESS ?= auto
 PUSH ?= false
+LOAD ?= false
 COMMON_ARGS := --file=Pkgfile
 COMMON_ARGS += --progress=$(PROGRESS)
 COMMON_ARGS += --platform=$(PLATFORM)
@@ -83,7 +84,7 @@ target-%: ## Builds the specified target defined in the Dockerfile. The build re
 		$(TARGET_ARGS) .
 
 docker-%: ## Builds the specified target defined in the Dockerfile using the docker output type. The build result will be loaded into docker.
-	@$(MAKE) target-$* TARGET_ARGS="$(TARGET_ARGS)"
+	$(MAKE) target-$* TARGET_ARGS="$(TARGET_ARGS) --load=$(LOAD)"
 
 .PHONY: $(TARGETS) $(NONFREE_TARGETS)
 $(TARGETS) $(NONFREE_TARGETS):
